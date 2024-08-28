@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
+import { useState } from 'react'
 
-function App() {
-  const [count, setCount] = useState(0)
+function TodoList () {
+  const [todos, setTodos] = useState([])
+  const [inputValue, setInputValue] = useState('')
 
+function handleChange(e){
+  setInputValue(e.target.value)
+}
+
+function handleSubmit(e){
+  e.preventDefault()
+  setTodos([...todos, inputValue])
+  setInputValue('')
+}
+
+const handleDelete = (index) => {
+  const newTodos = [...todos];
+  newTodos.splice(index, 1);
+  setTodos(newTodos);
+};
   return (
-    <>
+    <div className='first-container'>
+      <h1>Liste de taches</h1>
+      <form>
+        <div className='container-input'>
+          <input type='text' className='input' value={inputValue} onChange={handleChange}/>
+        </div>
+      </form>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+          <button  className='button-add'  onClick={handleSubmit}>Ajouter une tache</button>
+        </div>
+
+
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo}>{todo}
+           <button  className='button-delete'  onClick={handleDelete}>Suprimer</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+
   )
 }
 
-export default App
+export default TodoList
